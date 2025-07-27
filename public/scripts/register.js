@@ -26,6 +26,7 @@ document.getElementById('cadastroForm').addEventListener('submit', async (e) => 
             document.getElementById('msg').style.color = 'green';
             document.getElementById('msg').textContent = 'Cadastro realizado com sucesso!';
             form.reset();
+            window.location.href = `${api_url}/todolist/app/dashboard`;
         } else {
             document.getElementById('msg').textContent = result.error || 'Erro ao cadastrar';
         }
