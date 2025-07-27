@@ -3,6 +3,7 @@ const bcrypt = require('bcryptjs');
 const generateToken = require('../utils/generateToken');
 
 async function registerCliente({ nome, email, senha }) {
+    console.log(senha);
     const hashedPassword = await bcrypt.hash(senha, 10);
 
     const result = await pool.query('insert into clientes (nome,email,senha) values ($1,$2,$3) returning id,email', [nome, email, hashedPassword]

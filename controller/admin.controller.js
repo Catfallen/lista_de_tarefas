@@ -2,6 +2,7 @@ const adminService = require('../service/admin.service');
 
 async function postNewCliente(req,res) {
     try{
+        console.log(req.body);
         const result = await adminService.registerCliente(req.body);
         //console.log(admin);
         //res.status(201).json(admin);
@@ -23,6 +24,7 @@ async function postNewCliente(req,res) {
 
 async function loginCliente(req,res) {
     try {
+    console.log(req.body);
     const result = await adminService.loginCliente(req.body);
     // Definindo cookie seguro
     res.cookie('token', result.token, {
