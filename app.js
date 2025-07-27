@@ -27,7 +27,7 @@ app.use('/todolist/app',publicRoutes);
 app.use('/admin',adminRoutes);
 app.use('/todolist',tasksRoutes);
 
-const PORT = 3000
+const PORT = process.env.PORT || 3000;
 app.listen(PORT,()=>{
     console.log(`http://192.168.18.230:${PORT}`);
 })
