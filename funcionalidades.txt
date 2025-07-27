@@ -1,0 +1,9 @@
+consultar tarefas por id cliente
+
+inserir tarefas
+
+atualizar informações da tarefas
+
+atualizar estado de conclusão
+
+deletar tarefas
