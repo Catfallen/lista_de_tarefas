@@ -28,7 +28,7 @@ async function loginCliente(req,res) {
     // Definindo cookie seguro
     res.cookie('token', result.token, {
       httpOnly: true,
-      secure: true, // só funciona em HTTPS
+      secure: false, // só funciona em HTTPS
       sameSite: 'Strict',
       maxAge: 3600000 // 1 hora
     });

@@ -10,8 +10,7 @@ const pool = require('./config/db'); // importe o pool
 const adminRoutes = require('./routes/admin.routes');
 const tasksRoutes = require('./routes/tasks.routes');
 const publicRoutes = require('./routes/public.routes');
-
-
+const finanRoutes = require('./routes/finan.routes');
 
 app.use(express.json());
 app.use(cors());
@@ -31,6 +30,8 @@ app.get('/teste/conn', async (req, res) => {
     res.status(500).json({ error: 'Erro na conexão com o banco', details: error.message });
   }
 });
+
+app.useet('/finan',finanRoutes);
 
 app.use(express.static(path.join(__dirname,'public')));
 app.use('/todolist/app',publicRoutes);
