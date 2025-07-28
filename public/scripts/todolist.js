@@ -4,16 +4,16 @@ const task_name = document.getElementById('task_name');
 
 var carregando = false;
 
-class Loading{
+class Loading {
     #loading; //campo privado
-    constructor(){
+    constructor() {
         this.#loading = false;
     }
-    get loading(){
+    get loading() {
         return this.#loading;
     }
-    set loading(value){
-        if (typeof value !== 'boolean'){
+    set loading(value) {
+        if (typeof value !== 'boolean') {
             throw new TypeError('O valor de loading dever ser um booleano');
         }
         this.#loading = value;
@@ -25,18 +25,30 @@ const loading_delete = new Loading();
 
 btn.addEventListener('click', async () => {
     if (!loading_insert.loading) {
+        console.log(`Valor recebido: ${task_name.value}`);
         loading_insert.loading = true;
         btn.innerText = 'inserindo...'
-        let result = await insertTask(task_name.value, "", "", "2025-08-01");
-        if (result.id) {
-            tasks.push(result);
-            console.log("inserido com sucesso: ");
-            console.log(result);
-            getTasks();
+        if (task_name.value.trim() !== "") {
+            console.log(`Valor enviado: ${task_name.value}`)
+            let result = await insertTask(task_name.value, "", "", "2025-08-01");
+
+            if (result.id) {
+                tasks.push(result);
+                console.log("inserido com sucesso: ");
+                console.log(result);
+                getTasks();
+            }
+            loading_insert.loading = false;
+            btn.innerText = 'inserir';
+        } else {
+            console.log('campo vazio e carregando = false');
+            
         }
-        loading_insert.loading = false;
-        btn.innerText = 'inserir';
+    } else {
+        console.log('campo vazio')
     }
+    loading_insert.loading = false;
+    btn.innerText = 'inserir';
 });
 
 window.onload = () => {
@@ -49,18 +61,20 @@ function getTasks() {
     for (let key = 0; key < keys.length; key++) {
         let item = tasks[key];
         let check_text = "";
-        if (item.concluida == null){
+        let tio_p_class = "";
+        if (item.concluida == null) {
             item.concluida = false;
         }
-        if(item.concluida){
+        if (item.concluida) {
             check_text = '<i class="fas fa-check-square"></i>'
-        }else{
+            tio_p_class = 'concluida';
+        } else {
             check_text = '<i class="far fa-square"></i>'
         }
         let div = document.createElement('div');
         div.setAttribute('class', 'tasks-item');
 
-        
+
         // Conteudo da esquerda
         let left = document.createElement('p');
         let span_name = document.createElement('span');
@@ -84,18 +98,18 @@ function getTasks() {
 
         let span_check_icone = document.createElement('span');
         span_check_icone.innerHTML = check_text;
-        span_check_icone.setAttribute('put-id',item.id);
-        span_check_icone.addEventListener('click',function (event){
+        span_check_icone.setAttribute('put-id', item.id);
+        span_check_icone.addEventListener('click', function (event) {
             const id = this.getAttribute('put-id');
             updateCheck(id);
         });
-
         //div.appendChild(span_icone);
         //div.appendChild(span_check_icone);
         rigth.appendChild(span_icone);
         rigth.appendChild(span_check_icone);
         div.appendChild(rigth);
         tasks_div.appendChild(div);
+        span_check_icone.parentElement.parentElement.getElementsByTagName('p')[0].setAttribute('class', tio_p_class);
     }
 }
 
@@ -113,44 +127,48 @@ async function deleteTaskList(id) {
 }
 
 async function updateCheck(id) {
-    let index = tasks.indexOf(tasks.find(i=> i.id == id));
+    let index = tasks.indexOf(tasks.find(i => i.id == id));
     let boolean = tasks[index].concluida;
     console.log(boolean);
-    if (boolean == null){
+    if (boolean == null) {
         boolean = false;
     }
-    if (typeof boolean == 'boolean'){
+    if (typeof boolean == 'boolean') {
         boolean = !boolean;
         console.log(boolean);
-        const result = await updateTasksFinish(id,boolean);
+        const result = await updateTasksFinish(id, boolean);
         console.log(result);
-        if(result.id){
-            tasks.splice(index,1);
+        if (result.id) {
+            tasks.splice(index, 1);
             console.log('deletado com sucesso');
             tasks.push(result);
-            tasks.sort((a,b)=>a.id - b.id);
+            tasks.sort((a, b) => a.id - b.id);
             updateCheckIcon(result.id);
-        }else{
+        } else {
             console.log('erro');
         }
-    }else{
+    } else {
         console.log('tipo de dado incorreto');
     }
 }
 
-function updateCheckIcon(id){
+function updateCheckIcon(id) {
     let domList = [...document.querySelectorAll('span')];
-    for(let i = 0;i<domList.length;i++){
+    for (let i = 0; i < domList.length; i++) {
         let el = domList[i];
         //return dataid;
-        if (domList[i].getAttribute('put-id') == id.toString()){
+        if (domList[i].getAttribute('put-id') == id.toString()) {
             let icon = domList[i].getElementsByTagName('i')[0];
-            if (icon.getAttribute('class') == 'far fa-square'){
-                icon.setAttribute('class','fas fa-check-square');
-            }else{
-                icon.setAttribute('class','far fa-square');
+            let p_span = icon.parentElement.parentElement.parentElement.getElementsByTagName('p')[0];
+            console.log('avo: ');
+            console.log(p_span);
+            if (icon.getAttribute('class') == 'far fa-square') {
+                icon.setAttribute('class', 'fas fa-check-square');
+                p_span.setAttribute('class', 'concluida');
+            } else {
+                icon.setAttribute('class', 'far fa-square');
+                p_span.classList.remove('concluida');
             }
         }
     }
 }
-
