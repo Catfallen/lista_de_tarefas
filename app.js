@@ -31,7 +31,7 @@ app.get('/teste/conn', async (req, res) => {
   }
 });
 
-app.useet('/finan',finanRoutes);
+app.use('/finan',finanRoutes);
 
 app.use(express.static(path.join(__dirname,'public')));
 app.use('/todolist/app',publicRoutes);
