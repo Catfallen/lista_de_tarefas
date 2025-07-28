@@ -24,12 +24,11 @@ async function postNewCliente(req,res) {
 
 async function loginCliente(req,res) {
     try {
-    console.log(req.body);
     const result = await adminService.loginCliente(req.body);
     // Definindo cookie seguro
     res.cookie('token', result.token, {
       httpOnly: true,
-      secure: false, // só funciona em HTTPS
+      secure: true, // só funciona em HTTPS
       sameSite: 'Strict',
       maxAge: 3600000 // 1 hora
     });

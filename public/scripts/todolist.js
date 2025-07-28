@@ -9,11 +9,9 @@ class Loading{
     constructor(){
         this.#loading = false;
     }
-
     get loading(){
         return this.#loading;
     }
-
     set loading(value){
         if (typeof value !== 'boolean'){
             throw new TypeError('O valor de loading dever ser um booleano');
@@ -21,8 +19,6 @@ class Loading{
         this.#loading = value;
     }
 }
-
-
 
 const loading_insert = new Loading();
 const loading_delete = new Loading();
@@ -52,6 +48,15 @@ function getTasks() {
     tasks_div.innerHTML = "";
     for (let key = 0; key < keys.length; key++) {
         let item = tasks[key];
+        let check_text = "";
+        if (item.concluida == null){
+            item.concluida = false;
+        }
+        if(item.concluida){
+            check_text = '<i class="fas fa-check-square"></i>'
+        }else{
+            check_text = '<i class="far fa-square"></i>'
+        }
         let div = document.createElement('div');
         div.setAttribute('class', 'tasks-item');
 
@@ -60,14 +65,27 @@ function getTasks() {
         div.appendChild(span_name);
 
         let span_icone = document.createElement('span');
-        span_icone.innerHTML = '<i class="far fa-trash-alt delete"></i>'
+        
+        
+        span_icone.innerHTML = '<i class = "fas fa-trash"></i>';
+
         span_icone.setAttribute('data-id', item.id);
         span_icone.addEventListener('click', function (event) {
             const id = this.getAttribute('data-id');
             //const id = this.getAttribute('data-id');
             deleteTaskList(id);
-        })
-        div.appendChild(span_icone)
+        });
+
+        let span_check_icone = document.createElement('span');
+        span_check_icone.innerHTML = check_text;
+        span_check_icone.setAttribute('put-id',item.id);
+        span_check_icone.addEventListener('click',function (event){
+            const id = this.getAttribute('put-id');
+            updateCheck(id);
+        });
+
+        div.appendChild(span_icone);
+        div.appendChild(span_check_icone);
         tasks_div.appendChild(div);
     }
 }
@@ -84,3 +102,46 @@ async function deleteTaskList(id) {
         getTasks();
     }
 }
+
+async function updateCheck(id) {
+    let index = tasks.indexOf(tasks.find(i=> i.id == id));
+    let boolean = tasks[index].concluida;
+    console.log(boolean);
+    if (boolean == null){
+        boolean = false;
+    }
+    if (typeof boolean == 'boolean'){
+        boolean = !boolean;
+        console.log(boolean);
+        const result = await updateTasksFinish(id,boolean);
+        console.log(result);
+        if(result.id){
+            tasks.splice(index,1);
+            console.log('deletado com sucesso');
+            tasks.push(result);
+            tasks.sort((a,b)=>a.id - b.id);
+            updateCheckIcon(result.id);
+        }else{
+            console.log('erro');
+        }
+    }else{
+        console.log('tipo de dado incorreto');
+    }
+}
+
+function updateCheckIcon(id){
+    let domList = [...document.querySelectorAll('span')];
+    for(let i = 0;i<domList.length;i++){
+        let el = domList[i];
+        //return dataid;
+        if (domList[i].getAttribute('put-id') == id.toString()){
+            let icon = domList[i].getElementsByTagName('i')[0];
+            if (icon.getAttribute('class') == 'far fa-square'){
+                icon.setAttribute('class','fas fa-check-square');
+            }else{
+                icon.setAttribute('class','far fa-square');
+            }
+        }
+    }
+}
+

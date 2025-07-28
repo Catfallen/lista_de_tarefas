@@ -2,7 +2,7 @@ const db = require('../config/db');
 
 async function getAlltasks(user_id) {
     try {
-        const query = `SELECT * FROM tasks WHERE id_cliente = $1`;
+        const query = `SELECT * FROM tasks WHERE id_cliente = $1 order by id`;
         const values = [user_id.toString()];
         const { rows } = await db.query(query, values);
         return rows;
@@ -35,6 +35,7 @@ async function updateTasks({nome,descricao,prioridade,data_conclusao,id}) {
 }
 
 async function updateTasksFinish({id,boolean}) {
+    console.log(id,boolean);
     const query = `update tasks set concluida = $1 where id = $2 returning *`;
     const values = [boolean,id];
     const {rows} = await db.query(query,values);

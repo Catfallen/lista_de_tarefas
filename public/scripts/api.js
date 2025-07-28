@@ -61,5 +61,23 @@ async function updateTask(id,nome,descricao,prioridade,data_conclusao) {
     }
 }
 
+async function updateTasksFinish(id,value) {
+    try{
+        console.log(`Valores enviados: ${id} - ${value}`);
+        const response = await fetch(`${api_url}/todolist/update/finish/${id}`,{
+            method:'put',credentials: 'include',headers:{
+                'Content-Type': 'Application/json'
+            },body: JSON.stringify({
+                'boolean':value
+            })
+        });
+        const result = await response.json();
+        return result;
+    }catch(err){
+        console.log(err);
+        return false
+    }
+}
+
 
 
