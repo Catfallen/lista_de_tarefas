@@ -60,15 +60,21 @@ function getTasks() {
         let div = document.createElement('div');
         div.setAttribute('class', 'tasks-item');
 
+        
+        // Conteudo da esquerda
+        let left = document.createElement('p');
         let span_name = document.createElement('span');
-        span_name.innerHTML = `${item.nome}`
-        div.appendChild(span_name);
+        span_name.innerHTML = `${item.nome}`;
+        left.appendChild(span_name);
+        div.appendChild(left);
 
+
+
+
+        //Conteudo da direita icones
+        let rigth = document.createElement('p');
         let span_icone = document.createElement('span');
-        
-        
         span_icone.innerHTML = '<i class = "fas fa-trash"></i>';
-
         span_icone.setAttribute('data-id', item.id);
         span_icone.addEventListener('click', function (event) {
             const id = this.getAttribute('data-id');
@@ -84,8 +90,11 @@ function getTasks() {
             updateCheck(id);
         });
 
-        div.appendChild(span_icone);
-        div.appendChild(span_check_icone);
+        //div.appendChild(span_icone);
+        //div.appendChild(span_check_icone);
+        rigth.appendChild(span_icone);
+        rigth.appendChild(span_check_icone);
+        div.appendChild(rigth);
         tasks_div.appendChild(div);
     }
 }

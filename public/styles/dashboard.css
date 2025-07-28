@@ -1,13 +1,14 @@
-*{
+* {
     padding: 0;
     margin: 0;
 }
 
-html,body{
+html,
+body {
     height: 100%;
 }
 
-body{
+body {
     color: white;
     overflow: hidden;
     padding-top: 50px;
@@ -19,25 +20,39 @@ body{
     font-size: 23px;
 }
 
-input{
+input {
     padding: 5px;
     font-size: 15px;
     box-sizing: border-box;
 }
 
 
-.tasks{
+.tasks {
     width: 70%;
     height: 50%;
 }
 
-.tasks-item{
+.tasks-item {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     box-sizing: border-box;
     padding: 10px;
     border-radius: 10px;
-background: #423a6f;
-  color: #fff;
+    background: #423a6f;
+    color: #fff;
+}
+
+.tasks-item .left{
+    width: 80%;
+}
+
+
+.tasks-item .rigth{
+    width: 20%;
+}
+
+i{
+    margin-left: 5px;
+    margin-right: 5px;
 }
