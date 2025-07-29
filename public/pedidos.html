@@ -32,11 +32,11 @@
     <thead></thead>
     <tbody></tbody>
   </table>
-
+  <script src="/scripts/ip.js"></script>
   <script>
     async function carregarPedidos() {
       try {
-        const res = await fetch('http://192.168.18.230:3000/finan/pedidos/3/2025-01-01');
+        const res = await fetch(`${api_url}/finan/pedidos/3/2025-01-01`);
         const dados = await res.json();
 
         if (!Array.isArray(dados) || dados.length === 0) {
