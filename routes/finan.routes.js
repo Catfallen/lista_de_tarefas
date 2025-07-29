@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-
+const finanController = require('../controller/finan.controller');
 const pool = require('../config/mysql');
 
 router.get('/teste', async (req, res) => {
@@ -12,5 +12,7 @@ router.get('/teste', async (req, res) => {
         res.status(500).json({ erro: 'Erro ao conectar com o banco de dados.' });
     }
 });
+
+router.get('/pedidos/:idstatus',finanController.getAll);
 
 module.exports = router;
