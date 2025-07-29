@@ -11,6 +11,7 @@ const adminRoutes = require('./routes/admin.routes');
 const tasksRoutes = require('./routes/tasks.routes');
 const publicRoutes = require('./routes/public.routes');
 const finanRoutes = require('./routes/finan.routes');
+const finanPublicRoutes = require('./routes/finan.public.routes');
 
 app.use(express.json());
 app.use(cors());
@@ -31,13 +32,16 @@ app.get('/teste/conn', async (req, res) => {
   }
 });
 
-app.use('/finan',finanRoutes);
+
 
 app.use(express.static(path.join(__dirname,'public')));
 app.use('/todolist/app',publicRoutes);
 
 app.use('/admin',adminRoutes);
 app.use('/todolist',tasksRoutes);
+
+app.use('/finan',finanRoutes);
+app.use('/finan/app',finanPublicRoutes);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT,()=>{

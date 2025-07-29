@@ -13,6 +13,6 @@ router.get('/teste', async (req, res) => {
     }
 });
 
-router.get('/pedidos/:idstatus',finanController.getAll);
+router.get('/pedidos/:idstatus/:data',finanController.getAll);
 
 module.exports = router;

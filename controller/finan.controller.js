@@ -2,9 +2,10 @@ const finanService = require('../service/finan.service');
 
 async function getAll(req,res) {
     try{
-        const {idstatus} = req.params;
+        const {idstatus,data} = req.params;
         console.log(idstatus);
-        const result = await finanService.getAll({idstatus});
+        console.log(data);
+        const result = await finanService.getAll({idstatus,data});
         res.status(200).json(result);
     }catch (err){
         res.status(500).json({'error':err});

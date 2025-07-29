@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Pedidos Dinâmicos</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 8px;
+      text-align: left;
+    }
+    th {
+      background-color: #eee;
+    }
+    tbody tr:nth-child(even) {
+      background-color: #f9f9f9;
+    }
+  </style>
+</head>
+<body>
+  <h1>Pedidos</h1>
+  <table id="tabelaPedidos">
+    <thead></thead>
+    <tbody></tbody>
+  </table>
+
+  <script>
+    async function carregarPedidos() {
+      try {
+        const res = await fetch('http://192.168.18.230:3000/finan/pedidos/3/2025-01-01');
+        const dados = await res.json();
+
+        if (!Array.isArray(dados) || dados.length === 0) {
+          document.querySelector('#tabelaPedidos').outerHTML = '<p>Nenhum dado encontrado.</p>';
+          return;
+        }
+
+        const thead = document.querySelector('#tabelaPedidos thead');
+        const tbody = document.querySelector('#tabelaPedidos tbody');
+
+        // Gera cabeçalhos com base nas chaves do primeiro objeto
+        const chaves = Object.keys(dados[0]);
+        const trHead = document.createElement('tr');
+        chaves.forEach(chave => {
+          const th = document.createElement('th');
+          th.textContent = chave;
+          trHead.appendChild(th);
+        });
+        thead.appendChild(trHead);
+
+        // Gera linhas da tabela
+        dados.forEach(item => {
+          const tr = document.createElement('tr');
+          chaves.forEach(chave => {
+            const td = document.createElement('td');
+            let valor = item[chave];
+
+            if (valor === null) {
+              valor = '';
+            } else if (typeof valor === 'string' && valor.match(/^\d{4}-\d{2}-\d{2}T/)) {
+              valor = new Date(valor).toLocaleDateString('pt-BR');
+            } else if (typeof valor === 'number') {
+              valor = valor.toFixed(2).replace('.', ',');
+            }
+
+            td.textContent = valor;
+            tr.appendChild(td);
+          });
+          tbody.appendChild(tr);
+        });
+
+      } catch (error) {
+        console.error('Erro ao carregar os dados:', error);
+      }
+    }
+
+    carregarPedidos();
+  </script>
+</body>
+</html>
