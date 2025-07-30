@@ -17,8 +17,7 @@ async function getAll({idstatus,data}) {
                 descricaoRequisicaoTipo,
                 valorTotalNota
              FROM qryrequisicao
-             WHERE idstatus = ? AND datamov > ?`,
-            [idstatus,data]
+             WHERE idstatus = ? AND datamov > `,
         );
         return rows;
     } catch (error) {
